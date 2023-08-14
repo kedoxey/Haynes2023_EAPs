@@ -1,5 +1,7 @@
 # General modules
 import os
+import requests
+import json
 import matplotlib as mpl
 if os.environ.get('DISPLAY','') == '':
     print('no display found. Using non-interactive Agg backend')
@@ -10,6 +12,7 @@ import sys
 import numpy as np
 import pandas as pd
 from pprint import pprint
+from zipfile import ZipFile
 
 # Simulation and analysis modules
 from netpyne import sim, specs
@@ -17,6 +20,8 @@ import neuron
 
 # relative import of NeuronProfiler
 cwd = os.getcwd()
+file_dir = os.path.dirname(os.path.realpath(__file__))
+haynes_dir = os.path.dirname(file_dir)
 parent_dir = os.path.dirname(cwd)
 workspace_dir = os.path.dirname(parent_dir)
 sys.path.append(parent_dir)
@@ -104,9 +109,9 @@ if runModelsFrom == 'aibs':
     model_set = 'test_aibs_models'
     fname = 'aibs_model_types.csv'
     
-    path2models = os.path.join(workspace_dir,'Haynes2021_EAPs',model_set)
-    path2savemodels = os.path.join(parent_dir,'model_data',runModelsFrom)
-    path2figs = os.path.join(parent_dir,'figures')
+    path2models = os.path.join(haynes_dir,model_set)
+    path2savemodels = os.path.join(haynes_dir,'model_data',runModelsFrom)
+    path2figs = os.path.join(haynes_dir,'figures')
     
     f = os.path.join(path2models,fname)
     cell_tags_df = pd.read_csv(f)
@@ -130,16 +135,10 @@ if runModelsFrom == 'aibs':
 
     
 
-    
+runNEURON = True
+runSONATA = False
 
-
-
-
-
-runNEURON = False
-runSONATA = True
-
-pre_compiled = True
+pre_compiled = False
 test_rest = False
 
 def valid_spike(Vm):
@@ -167,15 +166,34 @@ def test_model(model_num=0):
     dur = 1000
 
 
+    model_id, cellLabel, popLabel = model_ids[model_num], cell_labels[model_num], pop_labels[model_num]
 
+    # get neuroml-db model id
+    search_url = f'http://neuroml-db.org/api/search?q={model_id}'
 
+    nmldb_model_response = requests.get(search_url)
+    search_result = nmldb_model_response.content
 
-    NMLDB_ID, cellLabel, popLabel = model_ids[model_num], cell_labels[model_num], pop_labels[model_num]
+    json_search = json.loads(search_result)
+
+    NMLDB_ID = json_search[0]['Model_ID']
+
+    # get NEURON version from neuroml-db.org
+    neuron_zip = f'{NMLDB_ID}-NEURON'
+    if not os.path.exists(os.path.join(haynes_dir,'test_aibs_models',neuron_zip)):
+        neuron_url = f'https://neuroml-db.org/GetModelZip?modelID={NMLDB_ID}&version=NEURON'
+        neuron_response = requests.get(neuron_url)
+
+        open(os.path.join(haynes_dir,'test_aibs_models',f'{neuron_zip}.zip'), 'wb').write(neuron_response.content)
+
+        with ZipFile(os.path.join(haynes_dir,'test_aibs_models',f'{neuron_zip}.zip'), 'r') as zObject:
+            zObject.extractall(path=os.path.join(haynes_dir,'test_aibs_models',f'{NMLDB_ID}-NEURON'))
+
 
     from neuron import h
     # h.finitialize()
 
-    example_neuron = utils.get_neuron_model_details(NMLDB_ID)
+    example_neuron = utils.get_neuron_model_details(f'{NMLDB_ID}')
 
     file = example_neuron['model']['File_Name']
     model_dir = str(NMLDB_ID)
@@ -185,12 +203,12 @@ def test_model(model_num=0):
         file =  fname + '.hoc'
         model_dir = model_dir + '-NEURON'
         
-    if runSONTATA:
-        pass
-    
-    else:
+    if runSONATA:
         fname = file[:-9]
-        file = fname+'.cell.nml'
+    #     pass
+    # else:
+    #     fname = file[:-9]
+    #     file = fname+'.cell.nml'
 
     model_path = os.path.join(path2models,model_dir)
     example_neuron_file = os.path.join(model_path,file)
@@ -208,24 +226,17 @@ def test_model(model_num=0):
     neuron.load_mechanisms(model_path)
 
 
-
-
-
     # Model run details
     dt_optimal = example_neuron['model']['Optimal_DT']
 #     rheobase = example_neuron['model']['Rheobase_High'] # choose _Low or _High
 #     pulse_dur = 10
-    rheobase = example_neuron['model']['Threshold_current_High']
+    rheobase = example_neuron['model']['Threshold_Current_High']
     pulse_dur = 3
     bias_curr = example_neuron['model']['Bias_Current'] # nA
     vrest = example_neuron['model']['Resting_Voltage']
 
     vinit = vrest
     curr_amp = utils.get_short_square_current_amp(example_neuron)
-
-
-
-
 
 
     netParams = specs.NetParams()
@@ -279,8 +290,7 @@ def test_model(model_num=0):
     netParams.sizeZ = z_dim # z-dimension (horizontal length) size in um
 
 
-
-    netParams.popParams[popLabel] = {'cellModel' : 'Mark2015',
+    netParams.popParams[popLabel] = {'cellModel' : 'Gou2018',
                                      'cellType' : fname,
                                      'numCells' : 1}
 
@@ -289,8 +299,8 @@ def test_model(model_num=0):
 
     importedCellParams = netParams.importCellParams(label=cellLabel,
                                 somaAtOrigin=True,
-                                conds={'cellType': fname, 'cellModel': 'Mark2015'},
-                                fileName=example_neuron_file, cellName = fname)
+                                conds={'cellType': fname, 'cellModel': 'Gou2018'},
+                                fileName=example_neuron_file, cellName=fname)
 
 
     if runNEURON:
@@ -346,6 +356,7 @@ def test_model(model_num=0):
     # ds_factor = 10 # downsampling factor
 
     simConfig = specs.SimConfig()
+    simConfig.saveJson = True
 
     # global parameters
     simConfig.hParams= {'celsius': 34.0, # default is 6.3
@@ -397,7 +408,7 @@ def test_model(model_num=0):
 
 
 
-
+# 0 = 473863035_Nr5a1_ps_exc
 
 if __name__=='__main__':
     import sys
