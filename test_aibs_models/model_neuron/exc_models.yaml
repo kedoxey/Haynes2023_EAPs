@@ -1,0 +1,870 @@
+cell_type:
+  0: exc
+  1: exc
+  2: exc
+  3: exc
+  4: exc
+  5: exc
+  6: exc
+  7: exc
+  8: exc
+  9: exc
+  10: exc
+  11: exc
+  12: exc
+  13: exc
+  14: exc
+  15: exc
+  16: exc
+  17: exc
+  18: exc
+  19: exc
+  20: exc
+  21: exc
+  22: exc
+  23: exc
+  24: exc
+  25: exc
+  26: exc
+  27: exc
+  28: exc
+  29: exc
+  30: exc
+  31: exc
+  32: exc
+  33: exc
+  34: exc
+  35: exc
+  36: exc
+  37: exc
+  38: exc
+  39: exc
+  40: exc
+  41: exc
+  42: exc
+  43: exc
+  44: exc
+  45: exc
+  46: exc
+  47: exc
+  48: exc
+  49: exc
+  50: exc
+  51: exc
+  52: exc
+  53: exc
+  54: exc
+  55: exc
+  56: exc
+  57: exc
+  58: exc
+  59: exc
+  60: exc
+  61: exc
+  62: exc
+  63: exc
+  64: exc
+  65: exc
+  66: exc
+  67: exc
+  68: exc
+  69: exc
+  70: exc
+  71: exc
+  72: exc
+  73: exc
+  74: exc
+  75: exc
+  76: exc
+  77: exc
+  78: exc
+  79: exc
+  80: exc
+  81: exc
+  82: exc
+  83: exc
+  84: exc
+  85: exc
+  86: exc
+  87: exc
+  88: exc
+  89: exc
+  90: exc
+  91: exc
+  92: exc
+  93: exc
+  94: exc
+  95: exc
+  96: exc
+  97: exc
+  98: exc
+  99: exc
+  100: exc
+  101: exc
+  102: exc
+  103: exc
+  104: exc
+  105: exc
+  106: exc
+  107: exc
+  108: exc
+  109: exc
+  110: exc
+  111: exc
+  112: exc
+  113: exc
+  114: exc
+  115: exc
+  116: exc
+  117: exc
+  118: exc
+  119: exc
+  120: exc
+  121: exc
+  122: exc
+  123: exc
+  124: exc
+  125: exc
+  126: exc
+  127: exc
+  128: exc
+  129: exc
+  130: exc
+  131: exc
+  132: exc
+  133: exc
+  134: exc
+  135: exc
+  136: exc
+  137: exc
+  138: exc
+  139: exc
+  140: exc
+  141: exc
+  142: exc
+  143: exc
+  144: exc
+  145: exc
+  146: exc
+  147: exc
+  148: exc
+  149: exc
+  150: exc
+  151: exc
+  152: exc
+  153: exc
+  154: exc
+  155: exc
+  156: exc
+  157: exc
+  158: exc
+  159: exc
+  160: exc
+  161: exc
+  162: exc
+  163: exc
+  164: exc
+  165: exc
+  166: exc
+  167: exc
+  168: exc
+  169: exc
+  170: exc
+  171: exc
+  172: exc
+cre_line:
+  0: Nr5a1
+  1: Rorb
+  2: Ntsr1
+  3: Htr3a
+  4: Scnn1a
+  5: Cux2
+  6: Scnn1a
+  7: Scnn1a
+  8: Scnn1a
+  9: Rbp4
+  10: Htr3a
+  11: Rbp4
+  12: Rbp4
+  13: Cux2
+  14: Rorb
+  15: Htr3a
+  16: Scnn1a
+  17: Gad2
+  18: Rbp4
+  19: Nr5a1
+  20: Cux2
+  21: Htr3a
+  22: Rorb
+  23: Rbp4
+  24: Scnn1a
+  25: Scnn1a
+  26: Scnn1a
+  27: Nr5a1
+  28: Rbp4
+  29: Rorb
+  30: Htr3a
+  31: Rorb
+  32: Htr3a
+  33: Htr3a
+  34: Nr5a1
+  35: Rorb
+  36: Rbp4
+  37: Rbp4
+  38: Scnn1a
+  39: Cux2
+  40: Rbp4
+  41: Htr3a
+  42: Slc17a6
+  43: Htr3a
+  44: Rorb
+  45: Rorb
+  46: Scnn1a
+  47: Cux2
+  48: Rorb
+  49: Rorb
+  50: Rbp4
+  51: Htr3a
+  52: Rorb
+  53: Rbp4
+  54: Rbp4
+  55: Rorb
+  56: Cux2
+  57: Rorb
+  58: Cux2
+  59: Scnn1a
+  60: Gad2
+  61: Nr5a1
+  62: Htr3a
+  63: Scnn1a
+  64: Nr5a1
+  65: Rorb
+  66: Ntsr1
+  67: Scnn1a
+  68: Scnn1a
+  69: Rorb
+  70: Scnn1a
+  71: Scnn1a
+  72: Cux2
+  73: Rorb
+  74: Rorb
+  75: Nr5a1
+  76: Gad2
+  77: Htr3a
+  78: Htr3a
+  79: Rorb
+  80: Nr5a1
+  81: Nr5a1
+  82: Htr3a
+  83: Htr3a
+  84: Htr3a
+  85: Nr5a1
+  86: Rbp4
+  87: Rorb
+  88: Nr5a1
+  89: Cux2
+  90: Nr5a1
+  91: Htr3a
+  92: Scnn1a
+  93: Scnn1a
+  94: Rorb
+  95: Htr3a
+  96: Rbp4
+  97: Gad2
+  98: Rorb
+  99: Nr5a1
+  100: Htr3a
+  101: Htr3a
+  102: Htr3a
+  103: Rorb
+  104: Htr3a
+  105: Scnn1a
+  106: Scnn1a
+  107: Ntsr1
+  108: Htr3a
+  109: Rorb
+  110: Slc17a6
+  111: Htr3a
+  112: Nr5a1
+  113: Rorb
+  114: Htr3a
+  115: Rorb
+  116: Gad2
+  117: Rorb
+  118: Rorb
+  119: Nr5a1
+  120: Scnn1a
+  121: Rbp4
+  122: Cux2
+  123: Rorb
+  124: Htr3a
+  125: Htr3a
+  126: Rorb
+  127: Rorb
+  128: Nr5a1
+  129: Rbp4
+  130: Slc17a6
+  131: Rorb
+  132: Rorb
+  133: Nr5a1
+  134: Cux2
+  135: Scnn1a
+  136: Htr3a
+  137: Nr5a1
+  138: Rorb
+  139: Rorb
+  140: Htr3a
+  141: Scnn1a
+  142: Rorb
+  143: Htr3a
+  144: Scnn1a
+  145: Nr5a1
+  146: Rbp4
+  147: Rbp4
+  148: Slc17a6
+  149: Scnn1a
+  150: Rorb
+  151: Rbp4
+  152: Rorb
+  153: Rorb
+  154: Rorb
+  155: Rbp4
+  156: Nr5a1
+  157: Htr3a
+  158: Scnn1a
+  159: Htr3a
+  160: Rorb
+  161: Nr5a1
+  162: Cux2
+  163: Ntsr1
+  164: Rbp4
+  165: Scnn1a
+  166: Scnn1a
+  167: Scnn1a
+  168: Nr5a1
+  169: Rorb
+  170: Scnn1a
+  171: Htr3a
+  172: Rorb
+model_id:
+  0: '473863035'
+  1: '486909496'
+  2: '472430904'
+  3: '484620556'
+  4: '482934212'
+  5: '486557284'
+  6: '473871773'
+  7: '473465456'
+  8: '473872986'
+  9: '486052412'
+  10: '472421285'
+  11: '478513443'
+  12: '486556597'
+  13: '486509232'
+  14: '497232419'
+  15: '496930419'
+  16: '497229117'
+  17: '480630211'
+  18: '486508789'
+  19: '472442377'
+  20: '485513184'
+  21: '478513187'
+  22: '483108490'
+  23: '497232312'
+  24: '497229082'
+  25: '472912107'
+  26: '472306460'
+  27: '497233285'
+  28: '486508758'
+  29: '497232564'
+  30: '515175225'
+  31: '486508702'
+  32: '497233230'
+  33: '497232406'
+  34: '497233292'
+  35: '497229138'
+  36: '488462820'
+  37: '478513445'
+  38: '497229075'
+  39: '515175253'
+  40: '480624126'
+  41: '497232872'
+  42: '477880244'
+  43: '497233110'
+  44: '480630857'
+  45: '471087975'
+  46: '497233139'
+  47: '488461970'
+  48: '483109057'
+  49: '496930324'
+  50: '488759006'
+  51: '472352327'
+  52: '478810017'
+  53: '488763268'
+  54: '497233049'
+  55: '476637796'
+  56: '486558444'
+  57: '476630516'
+  58: '488462783'
+  59: '329321704'
+  60: '472447460'
+  61: '472306544'
+  62: '497232880'
+  63: '480624051'
+  64: '480633088'
+  65: '478047588'
+  66: '478513396'
+  67: '472363762'
+  68: '480613522'
+  69: '497232946'
+  70: '497233125'
+  71: '473863578'
+  72: '487245118'
+  73: '496490646'
+  74: '473863510'
+  75: '477876583'
+  76: '497230620'
+  77: '478045347'
+  78: '485476031'
+  79: '480051220'
+  80: '497233244'
+  81: '483156585'
+  82: '497232858'
+  83: '477494382'
+  84: '501349527'
+  85: '480630344'
+  86: '480624414'
+  87: '497232507'
+  88: '497229054'
+  89: '496538888'
+  90: '478513224'
+  91: '483066358'
+  92: '478048947'
+  93: '480632564'
+  94: '497232571'
+  95: '476679102'
+  96: '482520370'
+  97: '497233264'
+  98: '489932682'
+  99: '473834758'
+  100: '478045081'
+  101: '501349545'
+  102: '477313251'
+  103: '485591776'
+  104: '497232925'
+  105: '472300877'
+  106: '487245719'
+  107: '480632594'
+  108: '497232492'
+  109: '479427369'
+  110: '497232641'
+  111: '479234530'
+  112: '473862496'
+  113: '486509958'
+  114: '497232865'
+  115: '478047618'
+  116: '501349520'
+  117: '515175291'
+  118: '497232429'
+  119: '527109578'
+  120: '477839613'
+  121: '491766131'
+  122: '515175354'
+  123: '482583564'
+  124: '480056382'
+  125: '497232593'
+  126: '472434498'
+  127: '497232985'
+  128: '485720587'
+  129: '486052435'
+  130: '478809991'
+  131: '480630395'
+  132: '497232298'
+  133: '477876559'
+  134: '486511108'
+  135: '480624251'
+  136: '478045226'
+  137: '472451419'
+  138: '482529696'
+  139: '482655070'
+  140: '478045202'
+  141: '497233278'
+  142: '472299294'
+  143: '497232932'
+  144: '472455509'
+  145: '497229061'
+  146: '473871592'
+  147: '488083972'
+  148: '497232629'
+  149: '480361288'
+  150: '479427516'
+  151: '515175260'
+  152: '497229124'
+  153: '486508647'
+  154: '482657528'
+  155: '486509010'
+  156: '497232692'
+  157: '497230511'
+  158: '497233307'
+  159: '497232939'
+  160: '485909125'
+  161: '497229089'
+  162: '485510685'
+  163: '480631402'
+  164: '486556714'
+  165: '497230611'
+  166: '477839642'
+  167: '473862845'
+  168: '329322394'
+  169: '497232839'
+  170: '497232735'
+  171: '479234506'
+  172: '482657381'
+model_type:
+  0: ps
+  1: ps
+  2: ps
+  3: ps
+  4: ps
+  5: ps
+  6: ps
+  7: ps
+  8: ps
+  9: ps
+  10: ps
+  11: ps
+  12: ps
+  13: ps
+  14: aa
+  15: aa
+  16: aa
+  17: ps
+  18: ps
+  19: ps
+  20: ps
+  21: ps
+  22: ps
+  23: aa
+  24: aa
+  25: ps
+  26: ps
+  27: aa
+  28: ps
+  29: aa
+  30: aa
+  31: ps
+  32: aa
+  33: aa
+  34: aa
+  35: aa
+  36: ps
+  37: ps
+  38: aa
+  39: aa
+  40: ps
+  41: aa
+  42: ps
+  43: aa
+  44: ps
+  45: ps
+  46: aa
+  47: ps
+  48: ps
+  49: aa
+  50: ps
+  51: ps
+  52: ps
+  53: ps
+  54: aa
+  55: ps
+  56: ps
+  57: ps
+  58: ps
+  59: ps
+  60: ps
+  61: ps
+  62: aa
+  63: ps
+  64: ps
+  65: ps
+  66: ps
+  67: ps
+  68: ps
+  69: aa
+  70: aa
+  71: ps
+  72: ps
+  73: aa
+  74: ps
+  75: ps
+  76: aa
+  77: ps
+  78: ps
+  79: ps
+  80: aa
+  81: ps
+  82: aa
+  83: ps
+  84: aa
+  85: ps
+  86: ps
+  87: aa
+  88: aa
+  89: aa
+  90: ps
+  91: ps
+  92: ps
+  93: ps
+  94: aa
+  95: ps
+  96: ps
+  97: aa
+  98: ps
+  99: ps
+  100: ps
+  101: aa
+  102: ps
+  103: ps
+  104: aa
+  105: ps
+  106: ps
+  107: ps
+  108: aa
+  109: ps
+  110: aa
+  111: ps
+  112: ps
+  113: ps
+  114: aa
+  115: ps
+  116: aa
+  117: aa
+  118: aa
+  119: aa
+  120: ps
+  121: aa
+  122: aa
+  123: ps
+  124: ps
+  125: aa
+  126: ps
+  127: aa
+  128: ps
+  129: ps
+  130: ps
+  131: ps
+  132: aa
+  133: ps
+  134: ps
+  135: ps
+  136: ps
+  137: ps
+  138: ps
+  139: ps
+  140: ps
+  141: aa
+  142: ps
+  143: aa
+  144: ps
+  145: aa
+  146: ps
+  147: ps
+  148: aa
+  149: ps
+  150: ps
+  151: aa
+  152: aa
+  153: ps
+  154: ps
+  155: ps
+  156: aa
+  157: aa
+  158: aa
+  159: aa
+  160: ps
+  161: aa
+  162: ps
+  163: ps
+  164: ps
+  165: aa
+  166: ps
+  167: ps
+  168: ps
+  169: aa
+  170: aa
+  171: ps
+  172: ps
+nmldb_id:
+  0: NMLCL001535
+  1: NOT FOUND
+  2: NMLCL001457
+  3: NOT FOUND
+  4: NOT FOUND
+  5: NMLCL001463
+  6: NMLCL001530
+  7: NMLCL001454
+  8: NMLCL001433
+  9: NMLCL001501
+  10: NMLCL001493
+  11: NMLCL001542
+  12: NOT FOUND
+  13: NMLCL001468
+  14: NOT FOUND
+  15: NOT FOUND
+  16: NOT FOUND
+  17: NOT FOUND
+  18: NOT FOUND
+  19: NMLCL001443
+  20: NOT FOUND
+  21: NMLCL001440
+  22: NOT FOUND
+  23: NOT FOUND
+  24: NOT FOUND
+  25: NMLCL001481
+  26: NMLCL001497
+  27: NOT FOUND
+  28: NOT FOUND
+  29: NOT FOUND
+  30: NOT FOUND
+  31: NOT FOUND
+  32: NOT FOUND
+  33: NOT FOUND
+  34: NOT FOUND
+  35: NOT FOUND
+  36: NMLCL001510
+  37: NMLCL001441
+  38: NOT FOUND
+  39: NOT FOUND
+  40: NOT FOUND
+  41: NOT FOUND
+  42: NOT FOUND
+  43: NOT FOUND
+  44: NOT FOUND
+  45: NMLCL001458
+  46: NOT FOUND
+  47: NMLCL001496
+  48: NOT FOUND
+  49: NOT FOUND
+  50: NOT FOUND
+  51: NMLCL001499
+  52: NMLCL001527
+  53: NOT FOUND
+  54: NOT FOUND
+  55: NOT FOUND
+  56: NOT FOUND
+  57: NOT FOUND
+  58: NOT FOUND
+  59: NMLCL001502
+  60: NMLCL001464
+  61: NMLCL001526
+  62: NOT FOUND
+  63: NOT FOUND
+  64: NMLCL001521
+  65: NOT FOUND
+  66: NMLCL001516
+  67: NMLCL001479
+  68: NOT FOUND
+  69: NOT FOUND
+  70: NOT FOUND
+  71: NMLCL001453
+  72: NOT FOUND
+  73: NOT FOUND
+  74: NMLCL001525
+  75: NMLCL001507
+  76: NOT FOUND
+  77: NMLCL001492
+  78: NOT FOUND
+  79: NMLCL001435
+  80: NOT FOUND
+  81: NOT FOUND
+  82: NOT FOUND
+  83: NMLCL001532
+  84: NOT FOUND
+  85: NOT FOUND
+  86: NOT FOUND
+  87: NOT FOUND
+  88: NOT FOUND
+  89: NOT FOUND
+  90: NMLCL001484
+  91: NOT FOUND
+  92: NOT FOUND
+  93: NOT FOUND
+  94: NOT FOUND
+  95: NOT FOUND
+  96: NOT FOUND
+  97: NOT FOUND
+  98: NOT FOUND
+  99: NMLCL001500
+  100: NOT FOUND
+  101: NOT FOUND
+  102: NOT FOUND
+  103: NOT FOUND
+  104: NOT FOUND
+  105: NMLCL001533
+  106: NOT FOUND
+  107: NMLCL001498
+  108: NOT FOUND
+  109: NMLCL001450
+  110: NOT FOUND
+  111: NMLCL001452
+  112: NMLCL001541
+  113: NOT FOUND
+  114: NOT FOUND
+  115: NOT FOUND
+  116: NOT FOUND
+  117: NOT FOUND
+  118: NOT FOUND
+  119: NOT FOUND
+  120: NOT FOUND
+  121: NOT FOUND
+  122: NOT FOUND
+  123: NOT FOUND
+  124: NOT FOUND
+  125: NOT FOUND
+  126: NMLCL001488
+  127: NOT FOUND
+  128: NOT FOUND
+  129: NOT FOUND
+  130: NOT FOUND
+  131: NOT FOUND
+  132: NOT FOUND
+  133: NOT FOUND
+  134: NMLCL001439
+  135: NOT FOUND
+  136: NOT FOUND
+  137: NMLCL001462
+  138: NOT FOUND
+  139: NMLCL001449
+  140: NOT FOUND
+  141: NOT FOUND
+  142: NMLCL001478
+  143: NOT FOUND
+  144: NMLCL001512
+  145: NOT FOUND
+  146: NMLCL001470
+  147: NOT FOUND
+  148: NOT FOUND
+  149: NOT FOUND
+  150: NMLCL001431
+  151: NOT FOUND
+  152: NOT FOUND
+  153: NOT FOUND
+  154: NOT FOUND
+  155: NMLCL001475
+  156: NOT FOUND
+  157: NOT FOUND
+  158: NOT FOUND
+  159: NOT FOUND
+  160: NOT FOUND
+  161: NOT FOUND
+  162: NMLCL001466
+  163: NMLCL001430
+  164: NOT FOUND
+  165: NOT FOUND
+  166: NOT FOUND
+  167: NMLCL001514
+  168: NMLCL001469
+  169: NOT FOUND
+  170: NOT FOUND
+  171: NMLCL001447
+  172: NMLCL001522
