@@ -106,7 +106,7 @@ if runModelsFrom == 'bbp':
 
 
 if runModelsFrom == 'aibs':
-    model_set = 'test_aibs_models'
+    model_set = 'test_aibs_models/model_neuron'
     fname = 'aibs_model_types.csv'
     
     path2models = os.path.join(haynes_dir,model_set)
@@ -176,234 +176,239 @@ def test_model(model_num=0):
 
     json_search = json.loads(search_result)
 
-    NMLDB_ID = json_search[0]['Model_ID']
+    if json_search:
+        print(f'Model {model_id} found on neuroml-db!')
 
-    # get NEURON version from neuroml-db.org
-    neuron_zip = f'{NMLDB_ID}-NEURON'
-    if not os.path.exists(os.path.join(haynes_dir,'test_aibs_models',neuron_zip)):
-        neuron_url = f'https://neuroml-db.org/GetModelZip?modelID={NMLDB_ID}&version=NEURON'
-        neuron_response = requests.get(neuron_url)
+        NMLDB_ID = json_search[0]['Model_ID']
 
-        open(os.path.join(haynes_dir,'test_aibs_models',f'{neuron_zip}.zip'), 'wb').write(neuron_response.content)
+        # get NEURON version from neuroml-db.org
+        neuron_zip = f'{NMLDB_ID}-NEURON'
+        if not os.path.exists(os.path.join(haynes_dir,'test_aibs_models/model_neuron',neuron_zip)):
+            neuron_url = f'https://neuroml-db.org/GetModelZip?modelID={NMLDB_ID}&version=NEURON'
+            neuron_response = requests.get(neuron_url)
 
-        with ZipFile(os.path.join(haynes_dir,'test_aibs_models',f'{neuron_zip}.zip'), 'r') as zObject:
-            zObject.extractall(path=os.path.join(haynes_dir,'test_aibs_models',f'{NMLDB_ID}-NEURON'))
+            open(os.path.join(haynes_dir,'test_aibs_models/model_neuron',f'{neuron_zip}.zip'), 'wb').write(neuron_response.content)
 
-
-    from neuron import h
-    # h.finitialize()
-
-    example_neuron = utils.get_neuron_model_details(f'{NMLDB_ID}')
-
-    file = example_neuron['model']['File_Name']
-    model_dir = str(NMLDB_ID)
-
-    if runNEURON:
-        fname = file[:-9] # Needed for mod in cellParams
-        file =  fname + '.hoc'
-        model_dir = model_dir + '-NEURON'
-        
-    if runSONATA:
-        fname = file[:-9]
-    #     pass
-    # else:
-    #     fname = file[:-9]
-    #     file = fname+'.cell.nml'
-
-    model_path = os.path.join(path2models,model_dir)
-    example_neuron_file = os.path.join(model_path,file)
-
-    if not pre_compiled:
-        # print('Compiling model (.mod) files...')
-        # Uncomment 'os.system()' on first run
-        cmd_line_txt = '''
-                      cd %s
-                      nrnivmodl
-                      ''' %model_path
-        os.system(cmd_line_txt)
-
-    # print('Loading mechanisms...')
-    neuron.load_mechanisms(model_path)
+            with ZipFile(os.path.join(haynes_dir,'test_aibs_models/model_neuron',f'{neuron_zip}.zip'), 'r') as zObject:
+                zObject.extractall(path=os.path.join(haynes_dir,'test_aibs_models/model_neuron',f'{NMLDB_ID}-NEURON'))
 
 
-    # Model run details
-    dt_optimal = example_neuron['model']['Optimal_DT']
-#     rheobase = example_neuron['model']['Rheobase_High'] # choose _Low or _High
-#     pulse_dur = 10
-    rheobase = example_neuron['model']['Threshold_Current_High']
-    pulse_dur = 3
-    bias_curr = example_neuron['model']['Bias_Current'] # nA
-    vrest = example_neuron['model']['Resting_Voltage']
+        from neuron import h
+        # h.finitialize()
 
-    vinit = vrest
-    curr_amp = utils.get_short_square_current_amp(example_neuron)
+        example_neuron = utils.get_neuron_model_details(f'{NMLDB_ID}')
 
+        file = example_neuron['model']['File_Name']
+        model_dir = str(NMLDB_ID)
 
-    netParams = specs.NetParams()
+        if runNEURON:
+            fname = file[:-9] # Needed for mod in cellParams
+            file =  fname + '.hoc'
+            model_dir = model_dir + '-NEURON'
+            
+        if runSONATA:
+            fname = file[:-9]
+        #     pass
+        # else:
+        #     fname = file[:-9]
+        #     file = fname+'.cell.nml'
 
+        model_path = os.path.join(path2models,model_dir)
+        example_neuron_file = os.path.join(model_path,file)
 
-    ####################
-    # Geometry
-    # --------
-    # (Cartesian axes)
-    #          y    z
-    #          ^  ^
-    #          | /
-    #   x <--- o --
-    #         /|
-    ####################
+        if not pre_compiled:
+            # print('Compiling model (.mod) files...')
+            # Uncomment 'os.system()' on first run
+            cmd_line_txt = '''
+                        cd %s
+                        nrnivmodl
+                        ''' %model_path
+            os.system(cmd_line_txt)
 
-    netParams.propVelocity = 100.0 # propagation velocity (um/ms)
-    netParams.probLengthConst = 150.0 # length constant for conn probability (um)
-
-    # retrieve model height (to place pseudo-electrode points)
-    example_neuron_morpho = utils.get_neuron_model_morphometrics(NMLDB_ID)
-    for metric_dict in example_neuron_morpho:
-        if metric_dict['Metric_ID'] == 'Height':
-            model_height = metric_dict['Maximum']
-        if metric_dict['Metric_ID'] == 'Width':
-            model_width = metric_dict['Maximum']
-        if metric_dict['Metric_ID'] == 'Depth':
-            model_depth = metric_dict['Maximum']
+        # print('Loading mechanisms...')
+        neuron.load_mechanisms(model_path)
 
 
-    # define recording electrode geometry (get more precise)
-    channel_spacing = 50. # (microns)
-    buffer_dim = 50. # (microns)
+        # Model run details
+        dt_optimal = example_neuron['model']['Optimal_DT']
+    #     rheobase = example_neuron['model']['Rheobase_High'] # choose _Low or _High
+    #     pulse_dur = 10
+        rheobase = example_neuron['model']['Threshold_Current_High']
+        pulse_dur = 3
+        bias_curr = example_neuron['model']['Bias_Current'] # nA
+        vrest = example_neuron['model']['Resting_Voltage']
 
-    # TODO: Should be defined based on y minimum with soma placed at origin
-    y_shift = -225 # (microns)
+        vinit = vrest
+        curr_amp = utils.get_short_square_current_amp(example_neuron)
 
-    # get dimensions divisible by channel_spacing
-    x_dim =  channel_spacing*np.floor((model_width+buffer_dim)/channel_spacing)+channel_spacing
-    y_dim =  channel_spacing*np.floor((model_height+buffer_dim)/channel_spacing)+channel_spacing
-    z_dim =  channel_spacing*np.floor((model_depth+buffer_dim)/channel_spacing)+channel_spacing
 
-    # make x-z plane square
-    if x_dim>z_dim:
-        z_dim = x_dim
+        netParams = specs.NetParams()
+
+
+        ####################
+        # Geometry
+        # --------
+        # (Cartesian axes)
+        #          y    z
+        #          ^  ^
+        #          | /
+        #   x <--- o --
+        #         /|
+        ####################
+
+        netParams.propVelocity = 100.0 # propagation velocity (um/ms)
+        netParams.probLengthConst = 150.0 # length constant for conn probability (um)
+
+        # retrieve model height (to place pseudo-electrode points)
+        example_neuron_morpho = utils.get_neuron_model_morphometrics(NMLDB_ID)
+        for metric_dict in example_neuron_morpho:
+            if metric_dict['Metric_ID'] == 'Height':
+                model_height = metric_dict['Maximum']
+            if metric_dict['Metric_ID'] == 'Width':
+                model_width = metric_dict['Maximum']
+            if metric_dict['Metric_ID'] == 'Depth':
+                model_depth = metric_dict['Maximum']
+
+
+        # define recording electrode geometry (get more precise)
+        channel_spacing = 50. # (microns)
+        buffer_dim = 50. # (microns)
+
+        # TODO: Should be defined based on y minimum with soma placed at origin
+        y_shift = -225 # (microns)
+
+        # get dimensions divisible by channel_spacing
+        x_dim =  channel_spacing*np.floor((model_width+buffer_dim)/channel_spacing)+channel_spacing
+        y_dim =  channel_spacing*np.floor((model_height+buffer_dim)/channel_spacing)+channel_spacing
+        z_dim =  channel_spacing*np.floor((model_depth+buffer_dim)/channel_spacing)+channel_spacing
+
+        # make x-z plane square
+        if x_dim>z_dim:
+            z_dim = x_dim
+        else:
+            x_dim = z_dim
+
+        netParams.sizeX = x_dim # x-dimension (horizontal length) size in um
+        netParams.sizeY = y_dim # y-dimension (vertical height or cortical depth) size in um
+        netParams.sizeZ = z_dim # z-dimension (horizontal length) size in um
+
+
+        netParams.popParams[popLabel] = {'cellModel' : 'Gou2018',
+                                        'cellType' : fname,
+                                        'numCells' : 1}
+
+        # import cellParams
+        loadCellParams = NMLDB_ID
+
+        importedCellParams = netParams.importCellParams(label=cellLabel,
+                                    somaAtOrigin=True,
+                                    conds={'cellType': fname, 'cellModel': 'Gou2018'},
+                                    fileName=example_neuron_file, cellName=fname)
+
+
+        if runNEURON:
+            # set voltage initial conditions for all compartments
+            for sec in importedCellParams['secs']:
+                importedCellParams[sec]['vinit']=vinit # force to be same as in NEURON file
+
+        if not test_rest:
+            # apply bias adjusted current injection at rheobase
+            netParams.stimSourceParams['Input'] = {'type': 'IClamp', 'del': 10, 'dur': pulse_dur, 'amp': curr_amp}
+            netParams.stimTargetParams['Input->'+cellLabel] = {'source': 'Input', 'sec':'soma_0', 'loc': 0.5,
+                                                                'conds': {'pop':popLabel, 'cellList': [0]}}
+        else:
+            # apply bias adjusted current injection
+            if popLabel in ['L23_PC']: bias_curr*=5 # bias current adjustment for L23_PC
+            netParams.stimSourceParams['Input'] = {'type': 'IClamp', 'del': ss_delay, 'dur': dur, 'amp': bias_curr}
+            netParams.stimTargetParams['Input->'+cellLabel] = {'source': 'Input', 'sec':'soma_0', 'loc': 0.5,
+                                                                'conds': {'pop':popLabel, 'cellList': [0]}}
+
+        #
+        # else:
+        # apply default current to achieve steady state
+        # netParams.stimSourceParams['SS_Input'] = {'type': 'IClamp', 'del': 0, 'dur': dur+ss_delay, 'amp': 0}
+        # netParams.stimSourceParams['SS_Input'] = {'type': 'IClamp', 'del': 0, 'dur': dur+ss_delay, 'amp': bias_curr}
+        # netParams.stimTargetParams['SS_Input->'+cellLabel] = {'source': 'SS_Input', 'sec': 'soma_0', 'loc': 0.5,
+        #                                                     'conds': {'pop':popLabel, 'cellList': [0]}}
+
+
+
+        # This model is careful to ensure the clamp current is properly computed relative to the membrane voltage
+        # netParams.stimSourceParams['SS_Voltage'] = {'type': 'SEClamp', 'dur1':0}
+        # netParams.stimTargetParams['SS_Voltage->'+cellLabel] = {'source': 'SS_Voltage', 'sec': 'soma_0', 'loc': 0.5,
+        #                                                     'conds': {'pop':popLabel, 'cellList': [0]}}
+
+
+        # CHECK
+        # f = open('test_secs_valid.txt','w')
+        # f.write(str(netParams.cellParams[cellLabel]['secs']))
+        # f.close()
+        #
+        # f = open('test_popparams_valid.txt','w')
+        # f.write(str(netParams.popParams))
+        # f.close()
+        #
+        # f = open('test_stimtargetparams_valid.txt','w')
+        # f.write(str(netParams.stimTargetParams))
+        # f.close()
+        # raise Exception
+
+        #######################
+        #### Sim details ####
+        #######################
+        # ds_factor = 10 # downsampling factor
+
+        simConfig = specs.SimConfig()
+        simConfig.saveJson = True
+
+        # global parameters
+        simConfig.hParams= {'celsius': 34.0, # default is 6.3
+                            'v_init':  vinit}
+                            # 'v_init' : vrest}
+
+
+        simConfig.duration = dur+ss_delay # (ms)
+        simConfig.dt = dt_optimal
+        simConfig.verbose = True
+        # simConfig.recordStep = ds_factor * dt_optimal
+        simConfig.recordStep = 0.1
+
+
+        simConfig.recordCells = ['all']  # which cells to record from
+        simConfig.recordTraces = {'Vsoma':{'sec':'soma_0','loc':0.5,'var':'v'}}
+        simConfig.recordStim = False
+
+
+        (pops, cells, conns, stims, simData) = sim.createSimulateAnalyze(netParams = netParams, simConfig = simConfig,
+                                output = True)
+
+        print('TEST',simData)
+
+        t = np.array(simData['t'])
+        Vm = np.array(simData['Vsoma']['cell_0'])
+
+        if test_rest: f = cellLabel +'_vsoma_rest_mem_test.png'
+        else: f = cellLabel +'_vsoma_spike_test.png'
+        fig_f = os.path.join(path2figs,f)
+
+        fig = plt.figure(figsize=(8,8))
+        plt.plot(t,Vm)
+        print('Saving Vsoma plot')
+        fig.savefig(fig_f)
+
+        # test model
+        result = valid_spike(Vm)
+
+        if result:
+            print('>>>>>>>>>>>>>>>>>>>>>>>>>>',NMLDB_ID,'>>',cellLabel,'>>',popLabel,'PASSED spike peak test!')
+        else:
+            print('>>>>>>>>>>>>>>>>>>>>>>>>>>',NMLDB_ID,'>>',cellLabel,'>>',popLabel,'FAILED spike peak test...')
+
+
+        if test_rest:
+            print('Steady State at %s vs final Vm at %s'%(vrest,Vm[-1]))
     else:
-        x_dim = z_dim
-
-    netParams.sizeX = x_dim # x-dimension (horizontal length) size in um
-    netParams.sizeY = y_dim # y-dimension (vertical height or cortical depth) size in um
-    netParams.sizeZ = z_dim # z-dimension (horizontal length) size in um
-
-
-    netParams.popParams[popLabel] = {'cellModel' : 'Gou2018',
-                                     'cellType' : fname,
-                                     'numCells' : 1}
-
-    # import cellParams
-    loadCellParams = NMLDB_ID
-
-    importedCellParams = netParams.importCellParams(label=cellLabel,
-                                somaAtOrigin=True,
-                                conds={'cellType': fname, 'cellModel': 'Gou2018'},
-                                fileName=example_neuron_file, cellName=fname)
-
-
-    if runNEURON:
-        # set voltage initial conditions for all compartments
-        for sec in importedCellParams['secs']:
-            importedCellParams[sec]['vinit']=vinit # force to be same as in NEURON file
-
-    if not test_rest:
-        # apply bias adjusted current injection at rheobase
-        netParams.stimSourceParams['Input'] = {'type': 'IClamp', 'del': 10, 'dur': pulse_dur, 'amp': curr_amp}
-        netParams.stimTargetParams['Input->'+cellLabel] = {'source': 'Input', 'sec':'soma_0', 'loc': 0.5,
-                                                            'conds': {'pop':popLabel, 'cellList': [0]}}
-    else:
-        # apply bias adjusted current injection
-        if popLabel in ['L23_PC']: bias_curr*=5 # bias current adjustment for L23_PC
-        netParams.stimSourceParams['Input'] = {'type': 'IClamp', 'del': ss_delay, 'dur': dur, 'amp': bias_curr}
-        netParams.stimTargetParams['Input->'+cellLabel] = {'source': 'Input', 'sec':'soma_0', 'loc': 0.5,
-                                                            'conds': {'pop':popLabel, 'cellList': [0]}}
-
-    #
-    # else:
-    # apply default current to achieve steady state
-    # netParams.stimSourceParams['SS_Input'] = {'type': 'IClamp', 'del': 0, 'dur': dur+ss_delay, 'amp': 0}
-    # netParams.stimSourceParams['SS_Input'] = {'type': 'IClamp', 'del': 0, 'dur': dur+ss_delay, 'amp': bias_curr}
-    # netParams.stimTargetParams['SS_Input->'+cellLabel] = {'source': 'SS_Input', 'sec': 'soma_0', 'loc': 0.5,
-    #                                                     'conds': {'pop':popLabel, 'cellList': [0]}}
-
-
-
-    # This model is careful to ensure the clamp current is properly computed relative to the membrane voltage
-    # netParams.stimSourceParams['SS_Voltage'] = {'type': 'SEClamp', 'dur1':0}
-    # netParams.stimTargetParams['SS_Voltage->'+cellLabel] = {'source': 'SS_Voltage', 'sec': 'soma_0', 'loc': 0.5,
-    #                                                     'conds': {'pop':popLabel, 'cellList': [0]}}
-
-
-    # CHECK
-    # f = open('test_secs_valid.txt','w')
-    # f.write(str(netParams.cellParams[cellLabel]['secs']))
-    # f.close()
-    #
-    # f = open('test_popparams_valid.txt','w')
-    # f.write(str(netParams.popParams))
-    # f.close()
-    #
-    # f = open('test_stimtargetparams_valid.txt','w')
-    # f.write(str(netParams.stimTargetParams))
-    # f.close()
-    # raise Exception
-
-    #######################
-    #### Sim details ####
-    #######################
-    # ds_factor = 10 # downsampling factor
-
-    simConfig = specs.SimConfig()
-    simConfig.saveJson = True
-
-    # global parameters
-    simConfig.hParams= {'celsius': 34.0, # default is 6.3
-                        'v_init':  vinit}
-                        # 'v_init' : vrest}
-
-
-    simConfig.duration = dur+ss_delay # (ms)
-    simConfig.dt = dt_optimal
-    simConfig.verbose = True
-    # simConfig.recordStep = ds_factor * dt_optimal
-    simConfig.recordStep = 0.1
-
-
-    simConfig.recordCells = ['all']  # which cells to record from
-    simConfig.recordTraces = {'Vsoma':{'sec':'soma_0','loc':0.5,'var':'v'}}
-    simConfig.recordStim = False
-
-
-    (pops, cells, conns, stims, simData) = sim.createSimulateAnalyze(netParams = netParams, simConfig = simConfig,
-                            output = True)
-
-    print('TEST',simData)
-
-    t = np.array(simData['t'])
-    Vm = np.array(simData['Vsoma']['cell_0'])
-
-    if test_rest: f = cellLabel +'_vsoma_rest_mem_test.png'
-    else: f = cellLabel +'_vsoma_spike_test.png'
-    fig_f = os.path.join(path2figs,f)
-
-    fig = plt.figure(figsize=(8,8))
-    plt.plot(t,Vm)
-    print('Saving Vsoma plot')
-    fig.savefig(fig_f)
-
-    # test model
-    result = valid_spike(Vm)
-
-    if result:
-        print('>>>>>>>>>>>>>>>>>>>>>>>>>>',NMLDB_ID,'>>',cellLabel,'>>',popLabel,'PASSED spike peak test!')
-    else:
-        print('>>>>>>>>>>>>>>>>>>>>>>>>>>',NMLDB_ID,'>>',cellLabel,'>>',popLabel,'FAILED spike peak test...')
-
-
-    if test_rest:
-        print('Steady State at %s vs final Vm at %s'%(vrest,Vm[-1]))
+        print(f'Model {model_id} NOT found on neuroml-db!')
 
 
 

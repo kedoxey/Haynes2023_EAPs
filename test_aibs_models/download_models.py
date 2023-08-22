@@ -35,14 +35,15 @@ def download_neuroml_model(model_id):
         zip_path = f'{top_dir}/test_aibs_models/model_zips/{nmldb_id}-NEURON.zip'
         unzip_path = f'{top_dir}/test_aibs_models/model_neuron/{nmldb_id}-NEURON'
 
-        neuron_response = requests.get(neuron_url)
-        open(zip_path, 'wb').write(neuron_response.content)
-
         if not os.path.exists(unzip_path):
+            # download NEURON model if it has not been already
+            neuron_response = requests.get(neuron_url)
+            open(zip_path, 'wb').write(neuron_response.content)
+
             os.makedirs(unzip_path)
 
-        with ZipFile(zip_path, 'r') as zObject:
-            zObject.extractall(path=unzip_path)
+            with ZipFile(zip_path, 'r') as zObject:
+                zObject.extractall(path=unzip_path)
 
     return status, nmldb_id
 
@@ -56,8 +57,7 @@ models_df = pd.DataFrame.from_dict(models)
 
 model_columns = ['model_id', 'cre_line', 'model_type', 'cell_type', 'nmldb_id']
 
-exc_models_df = pd.DataFrame(columns=model_columns)
-inh_models_df = pd.DataFrame(columns=model_columns)
+all_models_df = pd.DataFrame(columns=model_columns)
 
 found = 0
 not_found = 0
@@ -73,18 +73,17 @@ for _, model_row in models_df.iterrows():
         exc_status, exc_nmbdb_id = download_neuroml_model(exc_model_data[0])
 
         if exc_status:
-            # if model exists on neuroml-db, add to excitatory df
+            # model exists in neuroml-db
             print(f'MODEL {exc_model_data[0]} FOUND!')
             found += 1
-
             exc_model_data.append(exc_nmbdb_id)
-            exc_models_df.loc[len(exc_models_df.index)] = exc_model_data
         else:
-            # if model does not exist on neuroml-db, add to excitatory df but not found flag
+            # model does not exist on neuroml-db
             print(f'MODEL {exc_model_data[0]} NOT FOUND!')
             not_found += 1
             exc_model_data.append('NOT FOUND')
-            exc_models_df.loc[len(exc_models_df.index)] = exc_model_data
+
+        all_models_df.loc[len(all_models_df.index)] = exc_model_data
     
     if inh_model != '':
         # if inhibitory model is in row, extract info and download model
@@ -95,25 +94,20 @@ for _, model_row in models_df.iterrows():
             # if model exists on neuroml-db, add to inhibitory df
             print(f'MODEL {inh_model_data[0]} FOUND!')
             found += 1
-
             inh_model_data.append(inh_nmbdb_id)
-            inh_models_df.loc[len(inh_models_df.index)] = inh_model_data
         else:
             # if model does not exist on neuroml-db, add to inhibitory df but not found flag
             print(f'MODEL {inh_model_data[0]} NOT FOUND!')
             not_found += 1
-
             inh_model_data.append('NOT FOUND')
-            inh_models_df.loc[len(inh_models_df.index)] = inh_model_data
+        
+        all_models_df.loc[len(all_models_df.index)] = inh_model_data
 
 print(f'{found} models found')
 print(f'{not_found} models not found')
 
 # save dfs in pickle and yaml format
-exc_models_df.to_pickle(f'{top_dir}/test_aibs_models/model_neuron/exc_models.pkl', protocol=3)
-with open(f'{top_dir}/test_aibs_models/model_neuron/exc_models.yaml', 'w') as outfile:
-    yaml.dump(exc_models_df.to_dict(),outfile)
-
-inh_models_df.to_pickle(f'{top_dir}/test_aibs_models/model_neuron/inh_models.pkl', protocol=3)
-with open(f'{top_dir}/test_aibs_models/model_neuron/inh_models.yaml', 'w') as outfile:
-    yaml.dump(inh_models_df.to_dict(),outfile)
+all_models_df.to_pickle(f'{top_dir}/test_aibs_models/model_neuron/all_models.pkl', protocol=3)
+all_models_df.to_csv(f'{top_dir}/test_aibs_models/model_neuron/all_models.csv', index=False)
+# with open(f'{top_dir}/test_aibs_models/model_neuron/all_models.yaml', 'w') as outfile:
+#     yaml.dump(all_models_df.to_dict(),outfile)

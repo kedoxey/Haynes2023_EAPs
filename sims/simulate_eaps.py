@@ -25,27 +25,27 @@ import pickle
 
 # relative import of NeuronProfiler
 cwd = os.getcwd()
-parent_dir = os.path.dirname(cwd)
-workspace_dir = os.path.dirname(parent_dir)
-sys.path.append(parent_dir)
+workspace_dir = os.path.dirname(cwd)
+# sys.path.append(parent_dir)
 sys.path.append(workspace_dir)
 # print('Added\n --> %s \nto path.' %parent_dir)
 
 import utils
 
-model_set = 'test_bbp_models' # 'bbp' or 'aibs'
+model_source = 'aibs'  # 'bbp' or 'aibs'
+model_set = f'test_{model_source}_models' 
 
 
-path2models = os.path.join(workspace_dir,'Haynes2021_EAPs',model_set)
-path2savemodels = os.path.join(workspace_dir,'Haynes2021_EAPs','model_data','bbp')
-path2figs = os.path.join(workspace_dir,'Haynes2021_EAPs','figures')
+path2models = os.path.join(cwd,model_set,'model_neuron')
+path2savemodels = os.path.join(cwd,'model_data',model_source)
+path2figs = os.path.join(cwd,'figures')
 
 
 run_NEURON = True
-pre_compiled = True
+pre_compiled = False
 test_rest = False
 save_df = True
-sampling_dist = 'adjusted-uniform' # 'fixed-normal' or 'adjusted-lognormal' or 'adjusted-uniform'
+sampling_dist = 'fixed-normal' # 'fixed-normal' or 'adjusted-lognormal' or 'adjusted-uniform'
 
 vexc_factor = 1 # conversion factor for units
 
@@ -160,185 +160,200 @@ def simulate_eaps(model_num=0):
 
 #     pop_labels = pop_1+pop_2+pop_3+pop_4
 
-    model_ids = [
-        # L5_TTPC1
-        'NMLCL000687',
-        'NMLCL000688',
-        'NMLCL000689',
-        'NMLCL000690',
-        'NMLCL000691',
+    # bbp models
+    if model_source == 'bbp':
+        model_ids = [
+            # L5_TTPC1
+            'NMLCL000687',
+            'NMLCL000688',
+            'NMLCL000689',
+            'NMLCL000690',
+            'NMLCL000691',
 
-        # L5_TTPC2
-        'NMLCL000695',
-        'NMLCL000692', 
-        'NMLCL000693', 
-        'NMLCL000694', 
-        'NMLCL000696', 
+            # L5_TTPC2
+            'NMLCL000695',
+            'NMLCL000692', 
+            'NMLCL000693', 
+            'NMLCL000694', 
+            'NMLCL000696', 
 
-        # L5_UTPC
-        'NMLCL000698',
-        'NMLCL000699', 
-        'NMLCL000701',
-        'NMLCL000700',
-        'NMLCL000697',
+            # L5_UTPC
+            'NMLCL000698',
+            'NMLCL000699', 
+            'NMLCL000701',
+            'NMLCL000700',
+            'NMLCL000697',
 
-        # L5_STPC
-        'NMLCL000684',
-        'NMLCL000685',
-        'NMLCL000682',
-        'NMLCL000686',
-        'NMLCL000683', 
+            # L5_STPC
+            'NMLCL000684',
+            'NMLCL000685',
+            'NMLCL000682',
+            'NMLCL000686',
+            'NMLCL000683', 
 
-        # L6_TPC_L4
-        'NMLCL000672',
-        'NMLCL000676',
-        'NMLCL000673',
-        'NMLCL000674', 
-        'NMLCL000675',
+            # L6_TPC_L4
+            'NMLCL000672',
+            'NMLCL000676',
+            'NMLCL000673',
+            'NMLCL000674', 
+            'NMLCL000675',
 
-        # L6_TPC_L1
-        'NMLCL000669',
-        'NMLCL000670',
-        'NMLCL000667',
-        'NMLCL000671',
-        'NMLCL000668', 
+            # L6_TPC_L1
+            'NMLCL000669',
+            'NMLCL000670',
+            'NMLCL000667',
+            'NMLCL000671',
+            'NMLCL000668', 
 
-        # L6_IPC
-        'NMLCL000662',
-        'NMLCL000666',
-        'NMLCL000663',
-        'NMLCL000664',
-        'NMLCL000665',
+            # L6_IPC
+            'NMLCL000662',
+            'NMLCL000666',
+            'NMLCL000663',
+            'NMLCL000664',
+            'NMLCL000665',
 
-        # L6_UTPC
-        'NMLCL000680',
-        'NMLCL000677',
-        'NMLCL000681',
-        'NMLCL000678',
-        'NMLCL000679',
+            # L6_UTPC
+            'NMLCL000680',
+            'NMLCL000677',
+            'NMLCL000681',
+            'NMLCL000678',
+            'NMLCL000679',
 
-        # L6_BPC
-        'NMLCL000659',
-        'NMLCL000660', 
-        'NMLCL000657',
-        'NMLCL000661',
-        'NMLCL000658',
+            # L6_BPC
+            'NMLCL000659',
+            'NMLCL000660', 
+            'NMLCL000657',
+            'NMLCL000661',
+            'NMLCL000658',
 
-        # L4_SS
-        'NMLCL000652',
-        'NMLCL000653',
-        'NMLCL000654',
-        'NMLCL000655',
-        'NMLCL000656',
+            # L4_SS
+            'NMLCL000652',
+            'NMLCL000653',
+            'NMLCL000654',
+            'NMLCL000655',
+            'NMLCL000656',
 
-        # L4_SP
-        'NMLCL000647',
-        'NMLCL000648',
-        'NMLCL000649',
-        'NMLCL000650',
-        'NMLCL000651',
+            # L4_SP
+            'NMLCL000647',
+            'NMLCL000648',
+            'NMLCL000649',
+            'NMLCL000650',
+            'NMLCL000651',
 
-        # L23_PC
-        'NMLCL000637',
-        'NMLCL000638',
-        'NMLCL000639',
-        'NMLCL000640',
-        'NMLCL000641',
+            # L23_PC
+            'NMLCL000637',
+            'NMLCL000638',
+            'NMLCL000639',
+            'NMLCL000640',
+            'NMLCL000641',
 
-        # L23_NBC
-        'NMLCL000494',
-        'NMLCL000492',
-        'NMLCL000496',
-        'NMLCL000495', 
-        'NMLCL000493', 
+            # L23_NBC
+            'NMLCL000494',
+            'NMLCL000492',
+            'NMLCL000496',
+            'NMLCL000495', 
+            'NMLCL000493', 
 
-        # L23_MC
-        'NMLCL000487',
-        'NMLCL000491', 
-        'NMLCL000488', 
-        'NMLCL000489', 
-        'NMLCL000490', 
+            # L23_MC
+            'NMLCL000487',
+            'NMLCL000491', 
+            'NMLCL000488', 
+            'NMLCL000489', 
+            'NMLCL000490', 
 
-        # L23_BTC
-        'NMLCL000469',
-        'NMLCL000487', 
-        'NMLCL000491',
-        'NMLCL000488',
-        'NMLCL000490',
+            # L23_BTC
+            'NMLCL000469',
+            'NMLCL000487', 
+            'NMLCL000491',
+            'NMLCL000488',
+            'NMLCL000490',
 
-        # L23_DBC
-        'NMLCL000480',
-        'NMLCL000479',
-        'NMLCL000477',
-        'NMLCL000481', 
-        'NMLCL000478',
+            # L23_DBC
+            'NMLCL000480',
+            'NMLCL000479',
+            'NMLCL000477',
+            'NMLCL000481', 
+            'NMLCL000478',
 
-        # L23_BP
-        'NMLCL000462',
-        'NMLCL000466',
-        'NMLCL000463', 
-        'NMLCL000464', 
-        'NMLCL000465', 
+            # L23_BP
+            'NMLCL000462',
+            'NMLCL000466',
+            'NMLCL000463', 
+            'NMLCL000464', 
+            'NMLCL000465', 
 
-        # L23_LBC
-        'NMLCL000484',
-        'NMLCL000485', 
-        'NMLCL000482',
-        'NMLCL000486',
-        'NMLCL000483',
+            # L23_LBC
+            'NMLCL000484',
+            'NMLCL000485', 
+            'NMLCL000482',
+            'NMLCL000486',
+            'NMLCL000483',
 
-        # L23_SBC
-        'NMLCL000505',
-        'NMLCL000502',
-        'NMLCL000506',
-        'NMLCL000503',
-        'NMLCL000504',
+            # L23_SBC
+            'NMLCL000505',
+            'NMLCL000502',
+            'NMLCL000506',
+            'NMLCL000503',
+            'NMLCL000504',
 
-        # L23_ChC
-        'NMLCL000473',
-        'NMLCL000474', 
-        'NMLCL000476',
-        'NMLCL000472',
-        'NMLCL000475', 
+            # L23_ChC
+            'NMLCL000473',
+            'NMLCL000474', 
+            'NMLCL000476',
+            'NMLCL000472',
+            'NMLCL000475', 
 
-        # L23_NGC
-        'NMLCL000501',
-        'NMLCL000499',
-        'NMLCL000498',
-        'NMLCL000497',
-        'NMLCL000500'
-    ]
+            # L23_NGC
+            'NMLCL000501',
+            'NMLCL000499',
+            'NMLCL000498',
+            'NMLCL000497',
+            'NMLCL000500'
+        ]
+        cell_labels = ['L5_TTPC1_%s'%(i+1) for i in range(5)]+  \
+                        ['L5_TTPC2_%s'%(i+1) for i in range(5)]+   \
+                        ['L5_UTPC_%s'%(i+1) for i in range(5)]+  \
+                        ['L5_STPC_%s'%(i+1) for i in range(5)]+  \
+                        ['L6_TPC_L4_%s'%(i+1) for i in range(5)]+\
+                        ['L6_TPC_L1_%s'%(i+1) for i in range(5)]+\
+                        ['L6_IPC_%s'%(i+1) for i in range(5)]+ \
+                        ['L6_UTPC_%s'%(i+1) for i in range(5)]+ \
+                        ['L6_BPC_%s'%(i+1) for i in range(5)]+ \
+                        ['L4_SS_%s'%(i+1) for i in range(5)]+ \
+                        ['L4_SP_%s'%(i+1) for i in range(5)]+ \
+                        ['L23_PC_%s'%(i+1) for i in range(5)]+ \
+                        ['L23_NBC_%s'%(i+1) for i in range(5)]+ \
+                        ['L23_MC_%s'%(i+1) for i in range(5)]+ \
+                        ['L23_BTC_%s'%(i+1) for i in range(5)]+ \
+                        ['L23_DBC_%s'%(i+1) for i in range(5)]+ \
+                        ['L23_BPC_%s'%(i+1) for i in range(5)]+ \
+                        ['L23_LBC_%s'%(i+1) for i in range(5)]+ \
+                        ['L23_SBC_%s'%(i+1) for i in range(5)]+ \
+                        ['L23_ChC_%s'%(i+1) for i in range(5)]+ \
+                        ['L23_NGC_%s'%(i+1) for i in range(5)]
 
-    cell_labels = ['L5_TTPC1_%s'%(i+1) for i in range(5)]+  \
-                  ['L5_TTPC2_%s'%(i+1) for i in range(5)]+   \
-                  ['L5_UTPC_%s'%(i+1) for i in range(5)]+  \
-                  ['L5_STPC_%s'%(i+1) for i in range(5)]+  \
-                  ['L6_TPC_L4_%s'%(i+1) for i in range(5)]+\
-                  ['L6_TPC_L1_%s'%(i+1) for i in range(5)]+\
-                  ['L6_IPC_%s'%(i+1) for i in range(5)]+ \
-                  ['L6_UTPC_%s'%(i+1) for i in range(5)]+ \
-                  ['L6_BPC_%s'%(i+1) for i in range(5)]+ \
-                  ['L4_SS_%s'%(i+1) for i in range(5)]+ \
-                  ['L4_SP_%s'%(i+1) for i in range(5)]+ \
-                  ['L23_PC_%s'%(i+1) for i in range(5)]+ \
-                  ['L23_NBC_%s'%(i+1) for i in range(5)]+ \
-                  ['L23_MC_%s'%(i+1) for i in range(5)]+ \
-                  ['L23_BTC_%s'%(i+1) for i in range(5)]+ \
-                  ['L23_DBC_%s'%(i+1) for i in range(5)]+ \
-                  ['L23_BPC_%s'%(i+1) for i in range(5)]+ \
-                  ['L23_LBC_%s'%(i+1) for i in range(5)]+ \
-                  ['L23_SBC_%s'%(i+1) for i in range(5)]+ \
-                  ['L23_ChC_%s'%(i+1) for i in range(5)]+ \
-                  ['L23_NGC_%s'%(i+1) for i in range(5)]
+        pops1 = ['L5_PC' for _ in range(20)]
+        pops2 = ['L6_PC' for _ in range(25)]
+        pops3 = ['L4_PC' for _ in range(10)]
+        pops4 = ['L23_PC' for _ in range(5)]
+        pops5 = ['L23_IN' for _ in range(45)]
+        pop_labels = pops1+pops2+pops3+pops4+pops5
 
-    
-    
-    pops1 = ['L5_PC' for _ in range(20)]
-    pops2 = ['L6_PC' for _ in range(25)]
-    pops3 = ['L4_PC' for _ in range(10)]
-    pops4 = ['L23_PC' for _ in range(5)]
-    pops5 = ['L23_IN' for _ in range(45)]
-    pop_labels = pops1+pops2+pops3+pops4+pops5
+    else:
+        all_models_df = pd.read_pickle(f'{path2models}/all_models.pkl')
+        all_models_df = all_models_df.sort_values('cre_line')
+
+        cre_lines = np.unique(all_models_df['cre_line'])
+        model_ids = []
+        cell_labels = []
+        pop_labels = []
+
+        for cre_line in cre_lines:
+            models_for_cre = all_models_df[(all_models_df['cre_line'] == cre_line) & (all_models_df['nmldb_id'] != 'NOT FOUND')]
+            model_ids += list(models_for_cre['nmldb_id'])
+            cell_labels += [f'{cre_line}_{i}' for i in range(len(models_for_cre))]
+            pop_labels += [f'{cre_line}' for _ in range(len(models_for_cre))]
+
 
     NMLDB_ID, cellLabel, popLabel = model_ids[model_num], cell_labels[model_num], pop_labels[model_num]
     
@@ -715,13 +730,13 @@ def simulate_eaps(model_num=0):
         t = np.array(simData['t'])
         Vm = np.array(simData['Vsoma']['cell_0'])
 
-#         f = cellLabel +'_vsoma_spike.png'
-#         fig_f = os.path.join(path2figs,f)
+        f = cellLabel +'_vsoma_spike.png'
+        fig_f = os.path.join(path2figs,f)
 
-#         fig = plt.figure(figsize=(8,8))
-#         plt.plot(t,Vm)
-#         print('Saving Vsoma plot')
-#         fig.savefig(fig_f)
+        fig = plt.figure(figsize=(8,8))
+        plt.plot(t,Vm)
+        print('Saving Vsoma plot')
+        fig.savefig(fig_f)
 
         # test model
         result = valid_spike(Vm)
